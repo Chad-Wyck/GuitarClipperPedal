@@ -61,35 +61,25 @@ void loop()
   //storage for sound samples
   unsigned char sample;
   
-  //play sound
-
-    probeValue = analogRead(probePin);
+  //Read Input from analog pin
+  probeValue = analogRead(probePin);
     
-    //Convert 0 to 1023 to volts: 1024/5 = 204.8:
-    float volts = probeValue/204.8;
-    float voltDiff = volts - 2.4;
-    volts = volts + voltDiff*28;
-    unsigned char soundValue = map(volts, 0, 5, 0, 255);
+  //Convert 0 to 1023 to volts: 1024/5 = 204.8:
+  float volts = probeValue/204.8;
+  float voltDiff = volts - 2.4;
+  volts = volts + voltDiff*28;
+  unsigned char soundValue = map(volts, 0, 5, 0, 255);
     
 
   //Assuming value is an unsigned int
   byte low = probeValue & 0x00FF; //The & 0X00FF masks out high byte (probably unnecessary)
   byte high = probeValue >> 8; //will pad high bits with 0s after shift - would pad with 1s if value were negative
   
-  //analogWrite(9, high);
-  //analogWrite(10, low);
 
+  //Bit mask values
   //probeValue &= 0xFF0; // 6 bit
   //probeValue &= 0xFFFC;
 
-  
-
-  //probeValue &= 0x
-
-
-
-  
-  
   //10 bit to 8 and 2, 
   analogWrite(9, probeValue/4);
   analogWrite(10, (probeValue%4)*64);
@@ -100,7 +90,6 @@ void loop()
   //16 bit to 8 and 8
   //analogWrite(9, probeValue/256);
   //analogWrite(10, probeValue%256);
-  
   
   delayMicroseconds(500);
 }
