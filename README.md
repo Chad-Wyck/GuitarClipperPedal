@@ -1,1 +1,9 @@
-# CS207FinalProj
+# Mobile Arduino Guitar Pedal - Inspired by ElectroSmash pedalSHIELD UNO
+Build:
+https://www.electrosmash.com/pedalshield-uno
+
+
+
+Program:
+
+
