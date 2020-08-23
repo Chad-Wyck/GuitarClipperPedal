@@ -1,12 +1,9 @@
+//Arduino Beltstrap Guitar Clipper - Pre-amp and Effects
+//WIP Code: Waiting on mark 1 prototype for further testing.
+//Based on code from https://www.electrosmash.com/pedalshield-uno
+
 #include <avr/pgmspace.h>
-/* DAC Program Storage Exercise
- * Written Nov 15 2011 by Alex Clarke
- *
- *Completed program will play a short sound sample over and over again.
- *Pins 0 through 7 should be connected to an R/2R ladder.
- *Listen to the sound with headphones or speakers by using
- *two paperclips to connect plug to circuit and to ground.
- */
+
 //defining harware resources.
 #define LED 13
 #define FOOTSWITCH 12
@@ -50,9 +47,6 @@ sei(); // turn on interrupts - not really necessary with arduino
 const int probePin = A0;
 int probeValue;
 
-
-const PROGMEM byte music_array[] = {};
-
 void loop()
 {
   //record an initial time
@@ -61,35 +55,39 @@ void loop()
   //storage for sound samples
   unsigned char sample;
   
-  //Read Input from analog pin
+  //Read Guitar Input
   probeValue = analogRead(probePin);
-    
+  
   //Convert 0 to 1023 to volts: 1024/5 = 204.8:
   float volts = probeValue/204.8;
   float voltDiff = volts - 2.4;
   volts = volts + voltDiff*28;
   unsigned char soundValue = map(volts, 0, 5, 0, 255);
     
-
   //Assuming value is an unsigned int
   byte low = probeValue & 0x00FF; //The & 0X00FF masks out high byte (probably unnecessary)
   byte high = probeValue >> 8; //will pad high bits with 0s after shift - would pad with 1s if value were negative
   
+  //analogWrite(9, high);
+  //analogWrite(10, low);
 
-  //Bit mask values
+  
+  
+  //Bit Masks
   //probeValue &= 0xFF0; // 6 bit
-  //probeValue &= 0xFFFC;
-
-  //10 bit to 8 and 2, 
+  //probeValue &= 0xFFFC; // 8 bit  
+  
+  //10 bit output, 8 bits via PWM 9, 2 bits via PWM 10
   analogWrite(9, probeValue/4);
   analogWrite(10, (probeValue%4)*64);
-
-  
-  
+    
   //Increased Range required, assumed - 64x digital amplification (via post modification)
   //16 bit to 8 and 8
   //analogWrite(9, probeValue/256);
   //analogWrite(10, probeValue%256);
+   
   
+  //500 microsecond delay: 2khz (Retro Effect?)
+  //50 microsecond delay: 20khz
   delayMicroseconds(500);
 }
